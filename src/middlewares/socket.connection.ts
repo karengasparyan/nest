@@ -9,6 +9,7 @@ import {
 import {Socket} from "socket.io";
 import {UnauthorizedException} from "@nestjs/common";
 
+//https://hoppscotch.io/ru/realtime/
 @WebSocketGateway({cors: {origin: '*'}})
 export class SocketConnection implements OnGatewayConnection, OnGatewayDisconnect {
     @WebSocketServer()
