@@ -14,6 +14,7 @@ import {UnauthorizedException} from "@nestjs/common";
 export class SocketConnection implements OnGatewayConnection, OnGatewayDisconnect {
     @WebSocketServer()
     server;
+    private static users = new Set();
 
     @SubscribeMessage('message')
     handleMessage(@MessageBody() message: string): void {
@@ -24,8 +25,10 @@ export class SocketConnection implements OnGatewayConnection, OnGatewayDisconnec
         try {
             console.log('connected');
             const decoded = socket.handshake.headers.authorization;
+            SocketConnection.users[decoded] = socket;
+            this.server.emit('connected')
         } catch (e) {
-            return this.disconnect(socket);
+            return SocketConnection.disconnect(socket);
         }
     }
 
@@ -33,8 +36,13 @@ export class SocketConnection implements OnGatewayConnection, OnGatewayDisconnec
         console.log('disconnected')
     }
 
-    private disconnect(socket: Socket){
+    private static disconnect(socket: Socket){
         socket.emit('Error', new UnauthorizedException())
         socket.disconnect();
     }
+
+    static emit(userId: string, event: string, data: {message: string}) {
+        return this.users[userId] && this.users[userId].emit(event, data)
+    }
+
 }
