@@ -1,5 +1,4 @@
-import { Table, Column, Min, Model} from 'sequelize-typescript';
-import {MinDate} from "class-validator";
+import {Table, Column, Min, Model, BelongsToMany} from 'sequelize-typescript';
 
 @Table
 export class Users extends Model {

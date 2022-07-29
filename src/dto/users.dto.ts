@@ -1,9 +1,9 @@
 import {ApiModelProperty} from "@nestjs/swagger/dist/decorators/api-model-property.decorator";
 import {IsString, IsNotEmpty, IsNumber, IsInt, Min, Max} from "class-validator";
+import {Type} from "class-transformer";
 
 
 export class UsersDto {
-    readonly _id?: string;
 
     @ApiModelProperty({description: "", required: true})
     @IsString()
@@ -15,6 +15,7 @@ export class UsersDto {
         message: '18 min value',
     })
     @Max(56)
+    @Type(() => Number)
     readonly age: number;
 
 }

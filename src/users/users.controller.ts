@@ -47,6 +47,7 @@ export class UsersController {
     @ApiResponse({status: 403, description: 'Forbidden.'})
 
     async create(@Body() UsersDto: UsersDto ): Promise<object> {
+        console.log(888888888, UsersDto)
         const user = await this.usersService.create(UsersDto);
         return {
             status: 'success',
